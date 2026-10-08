@@ -1,0 +1,95 @@
+=======================================================
+  Bước 4: Guardrails AI Validators
+=======================================================
+
+=======================================================
+  Demo: PII Detection & Redaction
+=======================================================
+
+[Email]
+  Input:  Contact John at john.doe@example.com for details.
+  ⚠️  Đã redact 1 PII: ['EMAIL']
+  Output: Contact John at [EMAIL_REDACTED] for details.
+
+[Phone]
+  Input:  Call our support line at (555) 867-5309.
+  ⚠️  Đã redact 1 PII: ['PHONE']
+  Output: Call our support line at [PHONE_REDACTED].
+
+[SSN]
+  Input:  Patient SSN is 123-45-6789 on file.
+  ⚠️  Đã redact 1 PII: ['SSN']
+  Output: Patient SSN is [SSN_REDACTED] on file.
+
+[Credit Card]
+  Input:  Payment made with card 4532 1234 5678 9010.
+  ⚠️  Đã redact 1 PII: ['CREDIT_CARD']
+  Output: Payment made with card [CREDIT_CARD_REDACTED].
+
+[Multi-PII]
+  Input:  Email: alice@example.com, Phone: 555-123-4567
+  ⚠️  Đã redact 2 PII: ['EMAIL', 'PHONE']
+  Output: Email: [EMAIL_REDACTED], Phone: [PHONE_REDACTED]
+
+[All 4 types]
+  Input:  User bob@test.org, SSN 987-65-4320, card 4111-1111-1111-1111, tel +1 212-555-0198.
+  ⚠️  Đã redact 4 PII: ['EMAIL', 'PHONE', 'SSN', 'CREDIT_CARD']
+  Output: User [EMAIL_REDACTED], SSN [SSN_REDACTED], card [CREDIT_CARD_REDACTED], tel [PHONE_REDACTED].
+
+[Clean]
+  Input:  No sensitive information in this text.
+  Output: No sensitive information in this text.
+
+=======================================================
+  Demo: JSON Formatting & Repair
+=======================================================
+
+[Valid JSON]
+  Input:  '{"name": "Alice", "age": 30}'
+  Kết quả: ✅ JSON hợp lệ sẵn — giữ nguyên
+  Output: {"name": "Alice", "age": 30}
+
+[Markdown fences]
+  Input:  '```json\n{"name": "Bob"}\n```'
+  🔧 JSON đã được sửa thành công
+  Kết quả: 🔧 JSON lỗi — đã tự sửa
+  Output: {
+            "name": "Bob"
+          }
+
+[Single quotes]
+  Input:  "{'name': 'Charlie', 'score': 95}"
+  🔧 JSON đã được sửa thành công
+  Kết quả: 🔧 JSON lỗi — đã tự sửa
+  Output: {
+            "name": "Charlie",
+            "score": 95
+          }
+
+[Trailing comma]
+  Input:  '{"key": "value",}'
+  🔧 JSON đã được sửa thành công
+  Kết quả: 🔧 JSON lỗi — đã tự sửa
+  Output: {
+            "key": "value"
+          }
+
+[Combined errors]
+  Input:  "```json\n{'items': [1, 2, 3,], 'ok': true,}\n```"
+  🔧 JSON đã được sửa thành công
+  Kết quả: 🔧 JSON lỗi — đã tự sửa
+  Output: {
+            "items": [
+              1,
+              2,
+              3
+            ],
+            "ok": true
+          }
+
+[Truly invalid]
+  Input:  'This is not JSON at all: ??? {]'
+  Kết quả: ⚠️  Không sửa được — trả về JSON dự phòng
+  Output: {"error": "Không thể phân tích JSON", "raw": "This is not JSON at all: ??? {]"}
+
+✅ Bước 4 hoàn thành!

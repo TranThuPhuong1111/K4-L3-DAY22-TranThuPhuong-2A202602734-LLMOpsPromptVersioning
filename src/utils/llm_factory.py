@@ -105,6 +105,17 @@ def get_embeddings(provider: str = None):
     """
     provider = (provider or config.PROVIDER).lower()
 
+    if provider == "openrouter" and not config.OPENAI_API_KEY:
+        # Không có key OpenAI → gọi embeddings qua endpoint OpenAI-compatible của OpenRouter.
+        # check_embedding_ctx_length=False: gửi text thô thay vì token id của tiktoken.
+        from langchain_openai import OpenAIEmbeddings
+        return OpenAIEmbeddings(
+            model=config.OPENROUTER_EMBEDDING_MODEL,
+            api_key=config.OPENROUTER_API_KEY,
+            base_url=config.OPENROUTER_BASE_URL,
+            check_embedding_ctx_length=False,
+        )
+
     if provider in ("openai", "openrouter"):
         from langchain_openai import OpenAIEmbeddings
         kwargs = {

@@ -22,8 +22,14 @@ os.environ["LANGCHAIN_ENDPOINT"]   = os.getenv("LANGCHAIN_ENDPOINT", "https://ap
 # Đổi giá trị PROVIDER trong .env: openai | gemini | anthropic | ollama | openrouter
 PROVIDER = os.getenv("PROVIDER", "openai").lower()
 
+def _key(name: str) -> str:
+    """Đọc API key; coi giá trị mẫu từ .env.example (your_..._here) là chưa điền."""
+    value = os.getenv(name, "").strip()
+    return "" if value.startswith("your_") else value
+
+
 # ── OpenAI ────────────────────────────────────────────────────────────────
-OPENAI_API_KEY         = os.getenv("OPENAI_API_KEY", "")
+OPENAI_API_KEY         = _key("OPENAI_API_KEY")
 OPENAI_BASE_URL        = os.getenv("OPENAI_BASE_URL", "")   # để trống nếu dùng OpenAI chính thức
 OPENAI_MODEL           = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
@@ -43,8 +49,10 @@ OLLAMA_MODEL            = os.getenv("OLLAMA_MODEL", "llama3.1")
 OLLAMA_EMBEDDING_MODEL  = os.getenv("OLLAMA_EMBEDDING_MODEL", "nomic-embed-text")
 
 # ── OpenRouter ────────────────────────────────────────────────────────────
-OPENROUTER_API_KEY  = os.getenv("OPENROUTER_API_KEY", "")
+OPENROUTER_API_KEY  = _key("OPENROUTER_API_KEY")
 OPENROUTER_MODEL    = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
+# Dùng khi PROVIDER=openrouter mà không có OPENAI_API_KEY (OpenRouter có endpoint /embeddings)
+OPENROUTER_EMBEDDING_MODEL = os.getenv("OPENROUTER_EMBEDDING_MODEL", "openai/text-embedding-3-small")
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
 # ── LangSmith ─────────────────────────────────────────────────────────────

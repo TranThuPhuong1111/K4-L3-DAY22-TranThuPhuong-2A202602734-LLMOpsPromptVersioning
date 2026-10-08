@@ -1,0 +1,33 @@
+{
+  "num_samples": {
+    "v1": 50,
+    "v2": 50
+  },
+  "prompt_v1_scores": {
+    "faithfulness": 0.9411818181818182,
+    "answer_relevancy": 0.9074389625591889,
+    "context_recall": 1.0,
+    "context_precision": 0.9449999999252501
+  },
+  "prompt_v2_scores": {
+    "faithfulness": 0.9504516594516594,
+    "answer_relevancy": 0.8852316503962906,
+    "context_recall": 1.0,
+    "context_precision": 0.9416666665930835
+  },
+  "valid_samples_per_metric": {
+    "v1": {
+      "faithfulness": 50,
+      "answer_relevancy": 50,
+      "context_recall": 50,
+      "context_precision": 50
+    },
+    "v2": {
+      "faithfulness": 50,
+      "answer_relevancy": 50,
+      "context_recall": 50,
+      "context_precision": 50
+    }
+  },
+  "target_met": true
+}
